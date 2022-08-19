@@ -5,6 +5,10 @@
 #include "../STD_TYPES.h"
 #include "../BITS.h"
 #include "../AVR_REG.h"
+
+#define FiveSec 39062
+#define half_Sec 1
+
 /*________________________________________________________________*/
 /******************************************************************/
 /*                    Struct Function Input                       */
@@ -118,5 +122,7 @@ extern u8 Timer_Reset(u8 Copy_u8_timerChannel);
  *_______________________________________________________________________________________________________________________________*/
 extern u8 Timer_Get_FlagStatus(Str_TimerConfiguration_t* Confg_S, u8 *Copy_uint8Ptr_FlagStatus);
 
+extern u8 delay_5sec();
+extern u8 delay_half_sec();
 
 #endif /* TIMER_H_ */

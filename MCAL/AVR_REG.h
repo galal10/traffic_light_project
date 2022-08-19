@@ -74,7 +74,8 @@
 #define CS12 2
 #define TOV1 2
 #define OCF1A 4
-
+#define OCF1B 3
+#define ICF1 5
 
 /** timer 2 **/
 #define TOV2 6

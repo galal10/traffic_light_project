@@ -6,60 +6,57 @@
 #include "../BITS.h"
 #include "../STD_TYPES.h"
 
-#ifndef _VECTOR
-#define _VECTOR(N) __vector_ ## N
-#endif
-
-#ifdef __cplusplus
-#  define ISR(vector, ...)            \
-    extern "C" void vector (void) __attribute__ ((signal,__INTR_ATTRS)) __VA_ARGS__; \
-    void vector (void)
-#else
-#  define ISR(vector, ...)            \
-    void vector (void) __attribute__ ((signal,__INTR_ATTRS)) __VA_ARGS__; \
-    void vector (void)
-#endif
-
-
-/* Interrupt vectors */
 
 /* External Interrupt Request 0 */
-#define INT0_vect			_VECTOR(1)
-#define SIG_INTERRUPT0			_VECTOR(1)
-
+#define EXT_INT_0 __vector_1
 /* External Interrupt Request 1 */
-#define INT1_vect			_VECTOR(2)
-#define SIG_INTERRUPT1			_VECTOR(2)
-
+#define EXT_INT_1 __vector_2
 /* External Interrupt Request 2 */
-#define INT2_vect			_VECTOR(3)
-#define SIG_INTERRUPT2			_VECTOR(3)
+#define EXT_INT_2 __vector_3
+
+/* Timer Interrupt Vector */
+
+/* Set Global Interrupt, Set the I-bit in status register to 1 */
+#define sei() __asm__ __volatile__ ("sei" ::: "memory")
+
+/* Clear Global Interrupt, Set the I-bit in status register to 0 */
+#define cli() __asm__ __volatile__ ("cli" ::: "memory")
+
+/* ISR definition */
+#define ISR(INT_VECT)void INT_VECT(void) __attribute__((signal,used));\
+void INT_VECT(void)
 
 
-#define _VECTORS_SIZE 84
 
+
+/* Function Prototypes */
+/* Using this function to enable Interrupt 0
+ * INPUT : uint8_t --> FAILING OR RISING
+ * RETURN OK OR ERROR OF EXCUTE */
 
 /* Brief : Using this function to enable Interrupt
  * INTUPT : //
  * RETURN OK OR ERROR OF EXCUTE */
-Error Enable_INT(void);
+ERROR_int Enable_INT(void);
+
+/* Brief : Using this function to enable Interrupt 0
+ * INTUPT : u8 --> FAILING OR RISING
+ * RETURN OK OR ERROR OF EXCUTE */
+ERROR_int Enable_INT0 (u8 INT_STATE);
 
 /* Brief : Using this function to enable Interrupt 1
  * INTUPT : u8 --> FAILING OR RISING
  * RETURN OK OR ERROR OF EXCUTE */
-Error Enable_INT0 (u8 INT_STATE);
+ERROR_int Enable_INT1 (u8 INT_STATE);
 
-/* Brief : Using this function to enable Interrupt 1
+/* Brief : Using this function to disable Interrupt 2
  * INTUPT : u8 --> FAILING OR RISING
  * RETURN OK OR ERROR OF EXCUTE */
-Error Enable_INT1 (u8 INT_STATE);
+ERROR_int Enable_INT2 (u8 INT_STATE);
 
-/* Brief : Using this function to enable Interrupt 1
- * INTUPT : u8 --> FAILING OR RISING
+/* Brief : Using this function to disable Interrupt 0
+ * INTUPT : //
  * RETURN OK OR ERROR OF EXCUTE */
-Error Enable_INT2 (u8 INT_STATE);
-
-
+ERROR_int Disable_INT(void);
 
 #endif /* INTERRUPT_H_ */
-

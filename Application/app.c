@@ -1,87 +1,89 @@
 #include "app.h"
 
+//u8 *RED_Reading,*YELLOW_Reading;
+Str_TimerConfiguration_t TIMER_blink = {TIMER2, F_CPU_CLOCK_1024_TIMER_2, NORMAL_MODE};
+//u8 flag=100;
 
-void init()
+//void blinking_cycle()
+//{
+//	Timer_Init(&TIMER_blink);
+//	Timer_Start(&TIMER_blink,FiveSec);
+//
+//	while(READ_BIT(TIFR,TOV2)==0)
+//	{
+//		changing_cycle();
+//	}
+//	TIFR|= (1<<TOV2);
+//	Timer_Reset(TIMER2);
+//	Timer_Stop(TIMER2);
+//}
+
+void app_init()
 {
-	DIO_Port_Direction(CAR,OUTPUT);
-
-	Enable_INT();	
+	Enable_INT0(RISING);
+	Traffic_init();
+	init_interrupt_traffic();
+	//normal_cycle();
 }
 
-
-
-void delay_5sec()
+void app_start()
 {
-	Timer_Init(&TIMERS);		/* Timer0, normal mode, no pre-scalar */
-	Timer_Start(&TIMERS,FiveSec);
-
-	while((TIFR&0x01)==0);/* Wait for TOV0 to roll over */
-	Timer_Stop(TIMER1);
-	Timer_Reset(TIMER1);
-	TIFR |= (1<<TOV1) ;  		/* Clear TOV0 flag*/
+	normal_cycle();
 }
 
-void car_light()
+void normal_cycle()
 {
-		DIO_Pin_Write(YELLOW_CAR,LOW);
-		DIO_Pin_Write(GREEN_CAR,HIGH);
-		delay_5sec();
-		DIO_Pin_Write(GREEN_CAR,LOW);
-		DIO_Pin_Write(YELLOW_CAR,HIGH);
-		delay_5sec();
-		DIO_Pin_Write(YELLOW_CAR,LOW);
-		DIO_Pin_Write(RED_CAR,HIGH);
-		delay_5sec();
-		DIO_Pin_Write(RED_CAR,LOW);
-		DIO_Pin_Write(YELLOW_CAR,HIGH);
-		delay_5sec();
-
-}
-
-void person_light()
-{
-	DIO_Pin_Read(GREEN_CAR,RED_Reading);
-
-	if((*RED_Reading) == HIGH)
+	CAR_start();
+	//flag = 0;
+	delay_5sec();
+	for(int i=0;i<5;i++)
 	{
-		DIO_Pin_Write(YELLOW_CAR,HIGH);
-		delay_5sec();
-		DIO_Pin_Write(GREEN_CAR,LOW);
-		DIO_Pin_Write(RED_CAR,HIGH);
-		delay_5sec();
-		DIO_Pin_Write(GREEN_PERSON,HIGH);
-		delay_5sec();
-		delay_5sec();
-		DIO_Pin_Write(YELLOW_PERSON,HIGH);
-		DIO_Pin_Write(GREEN_PERSON,LOW);
-		delay_5sec();
-		DIO_Pin_Write(RED_PERSON,HIGH);
-
+		changing_cycle();
+		//flag = 1;
 	}
-
-	else if(((*YELLOW_Reading) == HIGH) && ((*RED_Reading) == LOW))
+	PERSON_start();
+	//flag=2;
+	delay_5sec();
+	for(int i=0;i<5;i++)
 	{
-		delay_5sec();
-		DIO_Pin_Write(YELLOW_CAR,LOW);
-		DIO_Pin_Write(RED_CAR,HIGH);
-		delay_5sec();
-		DIO_Pin_Write(GREEN_PERSON,HIGH);
-		delay_5sec();
-		delay_5sec();
-		DIO_Pin_Write(YELLOW_PERSON,HIGH);
-		DIO_Pin_Write(GREEN_PERSON,LOW);
-		delay_5sec();
-		DIO_Pin_Write(RED_PERSON,HIGH)
-	}
-
-	else
-	{
-		DIO_Pin_Write(GREEN_PERSON,HIGH);
-		delay_5sec();
-		delay_5sec();
-		DIO_Pin_Write(YELLOW_PERSON,HIGH);
-		DIO_Pin_Write(GREEN_PERSON,LOW);
-		delay_5sec();
-		DIO_Pin_Write(RED_PERSON,HIGH)
+		changing_cycle();
+		//flag=1;
 	}
 }
+
+void R_To_Y()
+{
+	delay_5sec();
+	for(int i=0;i<5;i++)
+		{changing_cycle();}
+	PERSON_start();
+	delay_5sec();
+	for(int i=0;i<5;i++)
+		{changing_cycle();}
+	normal_cycle();
+}
+
+void Y_To_G()
+{
+	for(int i=0;i<5;i++)
+		{changing_cycle();}
+	PERSON_start();
+	delay_5sec();
+	for(int i=0;i<5;i++)
+		{changing_cycle();}
+	normal_cycle();
+}
+
+void G_To_Y()
+{
+	for(int i=0;i<5;i++)
+		{changing_cycle();}
+	PERSON_start();
+	delay_5sec();
+	for(int i=0;i<5;i++)
+		{changing_cycle();}
+	normal_cycle();
+}
+
+
+

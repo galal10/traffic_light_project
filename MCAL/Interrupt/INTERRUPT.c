@@ -1,15 +1,16 @@
 #include "INTERRUPT.h"
 
 
-Error Enable_INT(void)
+ERROR_int Enable_INT(void)
 {
 	BIT_SET(SREG,enable);
 	return OK;
 }
 
 
-Error Enable_INT0(u8 INT_STATE)
+ERROR_int Enable_INT0(u8 INT_STATE)
 {
+	Enable_INT();
 	BIT_SET(GICR,INT0);
 	if(INT_STATE == FAILING)
 	{
@@ -25,13 +26,13 @@ Error Enable_INT0(u8 INT_STATE)
 	{
 		return ERROR;
 	}
-	Enable_INT();
 	return OK;
 
 }
 
-Error Enable_INT1(u8 INT_STATE)
+ERROR_int Enable_INT1(u8 INT_STATE)
 {
+	Enable_INT();
 	BIT_SET(GICR,INT1);
 	if(INT_STATE == FAILING)
 	{
@@ -47,12 +48,12 @@ Error Enable_INT1(u8 INT_STATE)
 	{
 		return ERROR;
 	}
-	Enable_INT();
 	return OK;
 }
 
-Error Enable_INT2(u8 INT_STATE)
+ERROR_int Enable_INT2(u8 INT_STATE)
 {
+	Enable_INT();
 	BIT_SET(GICR,INT2);
 	if(INT_STATE == FAILING)
 	{
@@ -66,6 +67,11 @@ Error Enable_INT2(u8 INT_STATE)
 	{
 		return ERROR;
 	}
-	Enable_INT();
+	return OK;
+}
+
+ERROR_int Disable_INT(void)
+{
+	cli();
 	return OK;
 }

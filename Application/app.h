@@ -1,30 +1,20 @@
 #ifndef APP_H_
 #define APP_H_
 
-#include "../MCAL/Timer/timer.h"
 #include "../MCAL/Interrupt/INTERRUPT.h"
 #include "../MCAL/DIO/DIO.h"
+#include "../MCAL/Timer/Timer.h"
+#include "../HAL/Led/led.h"
+#include "../HAL/Button/button.h"
 
+//#define FiveSec 39062
 
-#define CAR 0
-
-#define RED_CAR 	0
-#define YELLOW_CAR 	1
-#define GREEN_CAR 	2
-
-#define RED_PERSON 		16
-#define YELLOW_PERSON 	17
-#define GREEN_PERSON 	18
-
-#define switch 26
-
-#define FiveSec 39052
-
-Str_TimerConfiguration_t TIMERS = {TIMER1, F_CPU_CLOCK_1024_TIMER_1, NORMAL_MODE};
-u8 *RED_Reading,*YELLOW_Reading;
-
-void delay_5sec();
-
-void init();
+void app_init();
+void blinking_cycle();
+void app_start();
+void normal_cycle();
+void G_To_Y();
+void Y_To_G();
+void R_To_Y();
 
 #endif /* APP_H_ */
