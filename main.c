@@ -28,18 +28,17 @@ ISR(EXT_INT_0)
 	DIO_Pin_Read(YELLOW_CAR,&yellow_reading);
 	DIO_Pin_Read(GREEN_CAR,&green_reading);
 
-	if(red_reading) 	//flag == 0
+	if(red_reading)
 	{
 		G_To_Y();
 	}
 
-	else if(yellow_reading) 	//flag == 1
+	else if(yellow_reading)
 	{
-
 		Y_To_G();
 	}
 
-	else if(green_reading) 		//flag == 2
+	else if(green_reading)
 	{
 		R_To_Y();
 	}
